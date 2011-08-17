@@ -52,11 +52,6 @@ scope do
     example = Mote.parse("{{ @user }}", context)
     assert_equal "Bruno", example.call
   end
-
-  test "simulating locals" do
-    example = Mote.parse("{{ user }}")
-    assert_equal "Bruno", example.call(user: "Bruno")
-  end
 end
 
 include Mote::Helpers

@@ -20,21 +20,10 @@
 class Mote
   VERSION = "0.0.2"
 
-  module Dict
-    def _attr(att, val)
-      metaclass.send(:define_method, att) { val }
-    end
-
-    def metaclass
-      class << self; self; end
-    end
-  end
-
   def self.parse(template, context = self)
     terms = template.split(/({[{%]#?)\s*(.*?)\s*[%}]}/)
 
-    parts  = "Proc.new do |params, __o|\n params ||= {}; __o ||= ''\n"
-    parts += "params.each { |k, v| _attr(k, v) }\n"
+    parts = "Proc.new do |params, __o|\n params ||= {}; __o ||= ''\n"
 
     while term = terms.shift
       case term
@@ -47,7 +36,6 @@ class Mote
 
     parts << "__o; end"
 
-    context.extend(Dict)
     context.instance_eval(parts)
   end
 
