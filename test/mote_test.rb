@@ -37,12 +37,25 @@ scope do
     assert_equal "'foo' 'bar' 'baz'", example.call
   end
 
-  test "locals" do
+  test "context" do
     context = Object.new
     context.instance_variable_set(:@user, "Bruno")
 
     example = Mote.parse("{{ @user }}", context)
     assert_equal "Bruno", example.call
+  end
+
+  test "context" do
+    context = Object.new
+    context.instance_variable_set(:@user, "Bruno")
+
+    example = Mote.parse("{{ @user }}", context)
+    assert_equal "Bruno", example.call
+  end
+
+  test "simulating locals" do
+    example = Mote.parse("{{ user }}")
+    assert_equal "Bruno", example.call(user: "Bruno")
   end
 end
 
